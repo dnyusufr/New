@@ -129,12 +129,13 @@
 </head>
 <body>
     <!-- Music Toggle Button -->
+    <audio id="weddingMusic" src="music.mp3" autoplay loop></audio>
     <div class="music-container relative">
-        <a href="https://drive.google.com/file/d/1H6_b2BAA8z8H4DGlzHtpl9LaPduaZJaN/view?usp=sharing" target="_blank" class="music-toggle pulse-animation" id="musicToggle">
-            <i class="fas fa-music"></i>
-        </a>
-        <div class="music-tooltip">Click to open music</div>
+    <div class="music-toggle pulse-animation" id="musicToggle">
+        <i class="fas fa-music"></i>
     </div>
+    <div class="music-tooltip">Play / Pause Music</div>
+</div>
     
     <!-- Music Banner (shows initially) -->
     <div class="music-banner" id="musicBanner">
@@ -449,38 +450,36 @@
                 </div>
                 
                 <div class="mt-10">
-                    <a href="https://drive.google.com/file/d/1H6_b2BAA8z8H4DGlzHtpl9LaPduaZJaN/view?usp=sharing" target="_blank" class="inline-flex items-center bg-[#c8a97e] text-white py-3 px-6 rounded-full hover:bg-[#b69a70] transition duration-300">
-                        <i class="fas fa-music mr-2"></i> Listen to Our Wedding Song
-                    </a>
+                    <div class="music-toggle pulse-animation" id="musicToggle">
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 
     <script>
-        // Music link handling
-        document.getElementById('musicToggle').addEventListener('click', function(e) {
-            // This will open the Google Drive link in a new tab
-            window.open('https://drive.google.com/file/d/1H6_b2BAA8z8H4DGlzHtpl9LaPduaZJaN/view?usp=sharing', '_blank');
-            
-            // Visual feedback
-            this.classList.add('playing');
-            
-            // Show notification
-            const notification = document.createElement('div');
-            notification.className = 'fixed top-4 right-4 bg-white p-3 rounded-lg shadow-lg z-50';
-            notification.innerHTML = '<div class="flex items-center"><i class="fas fa-music text-[#c8a97e] mr-2"></i> Opening music in new tab</div>';
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transition = 'opacity 0.5s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 500);
-            }, 2000);
-        });
+       const music = document.getElementById('weddingMusic');
+const toggleBtn = document.getElementById('musicToggle');
+
+toggleBtn.addEventListener('click', function () {
+    if (music.paused) {
+        music.play();
+        toggleBtn.classList.add('playing');
+    } else {
+        music.pause();
+        toggleBtn.classList.remove('playing');
+    }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    music.volume = 0.7;
+    music.play().then(() => {
+        toggleBtn.classList.add('playing');
+    }).catch(() => {
+        console.log("Autoplay diblokir, pengguna harus klik tombol dulu.");
+    });
+});
+
         
         // Close music banner
         document.getElementById('closeBanner').addEventListener('click', function() {
